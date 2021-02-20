@@ -2,31 +2,53 @@ import React from 'react';
 import axios from 'axios';
 import MovieList from './ListOfMovies';
 
+const hardcode = [
+  // 'Mean Girls',
+  // 'Hackers',
+  // 'The Grey',
+  // 'Sunshine',
+  // 'Ex Machina'
+  {title: 'Mean Girls'},
+  {title: 'Hackers'},
+  {title: 'The Grey'},
+  {title: 'Sunshine'},
+  {title: 'Ex Machina'}
+];
+
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       title: '',
-      currentListOfMovies: []
+      currentListOfMovies: hardcode
     }
 
     this.searchForMovie = this.searchForMovie.bind(this);
     this.searchClickHandler = this.searchClickHandler.bind(this);
   }
 
+  componentDidMount() {
+
+  }
+
   searchForMovie(event) {
+    // let copyOfMovieArr = this.state.currentListOfMovies;
 
+    // for (let i = 0; i < copyOfMovieArr.length; i++) {
+    //   let titleSplit = copyOfMovieArr[i].split('');
+    //   console.log(titleSplit);
+    // }
 
-    this.setState({title: event.target.value})
+    this.setState({title: event.target.value});
   }
 
   searchClickHandler(event) {
     event.preventDefault();
 
-    let targetMovie = currentListOfMovies;
+    let targetMovie = this.state.currentListOfMovies;
 
-    targetMovie.push({title: event.target.value});
+    targetMovie.push({title: this.state.title});
 
     this.setState({currentListOfMovies: targetMovie});
 
@@ -42,9 +64,9 @@ class App extends React.Component {
             Find a Movie:
             <input type='text' onChange={this.searchForMovie}/>
           </label>
-          <input type='submit' value='Submit' onClick={this.searchClickHandler}/>
+          <input type='submit' onClick={this.searchClickHandler}/>
         </form>
-        <MovieList />
+        <MovieList allTheMovies={this.state.currentListOfMovies}/>
       </div>
     )
   }
