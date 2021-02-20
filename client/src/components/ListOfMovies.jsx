@@ -3,8 +3,6 @@ import React from 'react';
 const MovieList = (props) => {
   const moviesToList = props.allTheMovies;
 
-  console.log(moviesToList);
-
   const listedMovies = moviesToList.map((name, index) =>
     <li key={index}>
       {name.title}
