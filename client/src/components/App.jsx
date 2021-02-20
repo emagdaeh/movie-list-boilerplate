@@ -22,11 +22,14 @@ class App extends React.Component {
     this.state = {
       title: '',
       initialMovies: hardcode,
-      searchedMoviesList: []
+      searchedMoviesList: [],
+      addedMoviesOnly: []
     }
 
     this.searchForMovie = this.searchForMovie.bind(this);
     this.searchClickHandler = this.searchClickHandler.bind(this);
+    this.addAMovie = this.addAMovie.bind(this);
+    this.addMovieHandler = this.addMovieHandler.bind(this);
   }
 
   componentDidMount() {
@@ -50,8 +53,9 @@ class App extends React.Component {
       if (chars.substring(0).includes(enteredStr)) {
         searchedMovies.push(copyOfMovieArr[i]);
       }
-
     }
+
+    //Haven't handled movie not existing
 
     this.setState({searchedMoviesList: searchedMovies});
 
@@ -66,6 +70,22 @@ class App extends React.Component {
     targetMovie.push({title: this.state.title});
 
     this.setState({initialMovies: targetMovie});
+
+    this.setState({title: ''});
+  }
+
+  addAMovie(event) {
+    this.setState({title: event.target.value});
+  }
+
+  addMovieHandler() {
+    event.preventDefault();
+
+    let myMovies = this.state.addedMoviesOnly;
+
+    myMovies.push({title: this.state.title});
+
+    this.setState({addedMoviesOnly: myMovies});
 
     this.setState({title: ''});
   }
@@ -95,6 +115,13 @@ class App extends React.Component {
             </label>
             <input type='submit' onClick={this.searchClickHandler}/>
           </form>
+          <form>
+            <label>
+              Add a Movie:
+              <input type='text' onChange={this.addAMovie}/>
+            </label>
+            <input type='submit' onClick={this.addMovieHandler}/>
+          </form>
           <MovieList allTheMovies={this.state.initialMovies}/>
         </div>
       )
@@ -108,6 +135,13 @@ class App extends React.Component {
               <input type='text' onChange={this.searchForMovie}/>
             </label>
             <input type='submit' onClick={this.searchClickHandler}/>
+          </form>
+          <form>
+            <label>
+              Add a Movie:
+              <input type='text' />
+            </label>
+            <input type='submit' onClick={this.addAMovie}/>
           </form>
           <MovieList allTheMovies={this.state.searchedMoviesList}/>
         </div>
