@@ -1,16 +1,27 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const Movie = require('../database')
+const Movie = require('../database');
+const MOVIEDATABASE_API_KEY = require('./config/config.js');
+const axios = require('axios');
 
 app.use(express.static('public'));
 app.use(express.json());
 
 const oneMovie = new Movie({ title: 'Silence of the Lambs' });
 
-console.log('oneMovie: ', oneMovie);
+app.get('/api/movieList', (req, res) => {
+  // Here, I interact with either my database and/or The Movie Database
+  //https://api.themoviedb.org/3/search/movie?api_key={$MOVIEDATABASE_API_KEY}&query=Jack+Reachers
+  axios
+    .get(`https://api.themoviedb.org/3/search/movie?api_key=${MOVIEDATABASE_API_KEY}&query=Jack+Reachers`)
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 
-app.get('/', (req, res) => {
   res.send('Test')
 })
 
