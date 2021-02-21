@@ -15,7 +15,8 @@ class App extends React.Component{
 
     this.state = {
       title: '',
-      currentMovies: hardcode
+      currentMovies: hardcode,
+      overview: ''
     }
     this.onPageLoad = this.onPageLoad.bind(this);
   }
@@ -37,6 +38,7 @@ class App extends React.Component{
         // handle error
         console.log(error);
       })
+      .then(this.setState)
   }
 
   render() {

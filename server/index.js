@@ -12,17 +12,16 @@ const oneMovie = new Movie({ title: 'Silence of the Lambs' });
 
 app.get('/api/movieList', (req, res) => {
   // Here, I interact with either my database and/or The Movie Database
-  //https://api.themoviedb.org/3/search/movie?api_key={$MOVIEDATABASE_API_KEY}&query=Jack+Reachers
+
   axios
-    .get(`https://api.themoviedb.org/3/search/movie?api_key=${MOVIEDATABASE_API_KEY}&query=Jack+Reachers`)
-    .then((data) => {
-      console.log(data);
+    .get(`https://api.themoviedb.org/3/search/movie?api_key=${MOVIEDATABASE_API_KEY}&query=Mean+Girls`)
+    .then((response) => {
+      console.log('Movie successfully gotten');
+      res.send(response.data.results);
     })
     .catch((err) => {
-      console.log(err);
+      console.log('Error: ', err);
     })
-
-  res.send('Test')
 })
 
 app.post('/', (req, res) => {
