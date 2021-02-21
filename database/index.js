@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost/movieList', {useNewUrlParser: true, useUnifiedTopology: true});
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -12,7 +12,5 @@ const movieListSchema = new mongoose.Schema({
 });
 
 const Movie = mongoose.model('Movie', movieListSchema);
-
-// const oneMovie = new Movie({ title: 'Silence of the Lambs' });
 
 module.exports = Movie;

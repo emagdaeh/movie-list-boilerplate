@@ -15,31 +15,29 @@ class App extends React.Component{
 
     this.state = {
       title: '',
-      currentMovies: hardcode,
+      databaseMovies: [],
       overview: ''
     }
-    this.onPageLoad = this.onPageLoad.bind(this);
+    this.showDatabaseOfMovies = this.showDatabaseOfMovies.bind(this);
     this.handleSearchText = this.handleSearchText.bind(this);
-    this.findAndAddMovie = this.findAndAddMovie.bind(this);
+    this.findMovie = this.findMovie.bind(this);
   }
 
   componentDidMount() {
-    this.onPageLoad();
+    this.showDatabaseOfMovies();
   }
 
-  onPageLoad() {
+  showDatabaseOfMovies() {
     // In this function, I want to send a get request to the server
     // When the server data returns from movie API, set state of current movies to that original search string
 
     axios
       .get('/api/movieList')
       .then((response) => {
-        // handle success
         console.log(response);
-        this.setState({overview: response.data[0].overview});
+        this.setState({databaseMovies: response.data[0].title});
       })
       .catch((error) => {
-        // handle error
         console.log(error);
       })
   }
@@ -48,19 +46,22 @@ class App extends React.Component{
     this.setState({title: event.target.value});
   }
 
-  findAndAddMovie(event) {
+  findMovie(event) {
     event.preventDefault();
 
-    let addedMovieList = this.state.currentMovies;
+    let searchedForMovie = this.state.databaseMovies;
 
-    addedMovieList.push({title: this.state.title});
+    this.setState({searchedMovies: searchedForMovie});
 
-    this.setState({currentMovies: addedMovieList});
+    //Clear initial movie load
 
-    this.setState({title: ''}); //<-- unclear why this won't clear the form
+    //axios post here with searched title
+
+    this.setState({title: ''}); //<-- unclear why this won't clear the form field
   }
 
   render() {
+    // Do conditional render
     return(
       <div>
         <h1>Movie List</h1>
@@ -69,10 +70,10 @@ class App extends React.Component{
             Find a movie:
             <input type='text' onChange={this.handleSearchText}/>
           </label>
-          <button type='submit' value={this.state.title} onClick={this.findAndAddMovie}>Submit</button>
+          <button type='submit' value={this.state.title} onClick={this.findMovie}>Submit</button>
         </form>
         <ul>
-          <li>{this.state.currentMovies[0].title}</li>
+          <li>{this.state.databaseMovies}</li>
           <li>{this.state.overview}</li>
         </ul>
       </div>
