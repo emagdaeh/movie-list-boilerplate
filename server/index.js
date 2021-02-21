@@ -8,31 +8,6 @@ const axios = require('axios');
 app.use(express.static('public'));
 app.use(express.json());
 
-// const oneMovie = new Movie({ title: 'Lord of the Rings' });
-// oneMovie.save((err, result) => {
-//   if (err) {
-//     console.log('Error: ', err);
-//   } else {
-//     console.log('Success: ', result);
-//   }
-// })
-
-// Movie.deleteMany({ title: 'Silence of the Lambs' }, (err, result) => {
-//   if (err) {
-//     console.log('Error: ', err);
-//   } else {
-//     console.log('Success: ', result);
-//   }
-// });
-
-// Movie.find((err, result) => {
-//   if (err) {
-//     console.log('Error: ', err);
-//   } else {
-//     console.log('Success: ', result);
-//   }
-// })
-
 app.get('/api/movieList', (req, res) => {
   Movie.find((err, result) => {
     if (err) {
@@ -47,18 +22,26 @@ app.get('/api/movieList', (req, res) => {
 
 app.post('/api/movieList', (req, res) => {
   // Axios get to The Movie Database and communicate with db
+  const searchStr = req.body.title;
 
-  // axios
-  //   .get(`https://api.themoviedb.org/3/search/movie?api_key=${MOVIEDATABASE_API_KEY}&query=Mean+Girls`)
-  //   .then((response) => {
-  //     console.log('Movie successfully gotten');
-  //     res.send(response.data.results);
-  //   })
-  //   .catch((err) => {
+  axios
+    .get(`https://api.themoviedb.org/3/search/movie?api_key=${MOVIEDATABASE_API_KEY}&query=${searchStr}`)
+    .then((response) => {
+      console.log('Movie successfully gotten');
+      // console.log('response: ', response.data.results[0].title);
+      res.send(response.data.results[0].title);
+    })
+    .catch((err) => {
+      console.log('Error: ', err);
+    })
+
+  // Movie.save((err, result) => {
+  //   if (err) {
   //     console.log('Error: ', err);
-  //   })
-
-  res.send('Test')
+  //   } else {
+  //     console.log('Success: ', result);
+  //   }
+  // });
 })
 
 app.put('/', (req, res) => {

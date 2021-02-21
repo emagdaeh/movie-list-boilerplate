@@ -49,19 +49,19 @@ class App extends React.Component{
   findMovie(event) {
     event.preventDefault();
 
-    let searchedForMovie = this.state.databaseMovies;
-
-    this.setState({searchedMovies: searchedForMovie});
-
-    //Clear initial movie load
-
-    //axios post here with searched title
+    axios
+      .post('/api/movieList', {title: this.state.title})
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log('Error: ', error);
+      })
 
     this.setState({title: ''}); //<-- unclear why this won't clear the form field
   }
 
   render() {
-    // Do conditional render
     return(
       <div>
         <h1>Movie List</h1>
