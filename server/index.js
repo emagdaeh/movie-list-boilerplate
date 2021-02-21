@@ -1,9 +1,31 @@
 const express = require('express');
 const app = express();
-const PORT = 3000 || process.env.PORT;
+const port = 3000;
+const Movie = require('../database')
 
 app.use(express.static('public'));
+app.use(express.json());
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port: ${PORT}`);
+const oneMovie = new Movie({ title: 'Silence of the Lambs' });
+
+console.log('oneMovie: ', oneMovie);
+
+app.get('/', (req, res) => {
+  res.send('Test')
+})
+
+app.post('/', (req, res) => {
+  res.send('Test')
+})
+
+app.put('/', (req, res) => {
+  res.send('Test')
+})
+
+app.delete('/', (req, res) => {
+  res.send('Test')
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
 })
