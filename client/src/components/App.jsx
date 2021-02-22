@@ -1,13 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-
-const hardcode = [
-  {title: 'Mean Girls'},
-  {title: 'Hackers'},
-  {title: 'The Grey'},
-  {title: 'Sunshine'},
-  {title: 'Ex Machina'}
-];
+import SingleMovie from './ListOfMovies.jsx';
 
 class App extends React.Component{
   constructor(props) {
@@ -16,6 +9,7 @@ class App extends React.Component{
     this.state = {
       title: '',
       databaseMovies: [],
+      displayMovies: [],
       overview: ''
     }
     this.showDatabaseOfMovies = this.showDatabaseOfMovies.bind(this);
@@ -28,18 +22,24 @@ class App extends React.Component{
   }
 
   showDatabaseOfMovies() {
-    // In this function, I want to send a get request to the server
-    // When the server data returns from movie API, set state of current movies to that original search string
-
     axios
       .get('/api/movieList')
       .then((response) => {
         console.log(response);
-        this.setState({databaseMovies: response.data[0].title});
+
+        let allDBMovies = this.state.databaseMovies;
+
+        for (let i = 0; i < response.data.length; i++) {
+          allDBMovies.push({title: response.data[i].title});
+        }
+
+        this.setState({databaseMovies: allDBMovies});
       })
       .catch((error) => {
         console.log(error);
       })
+
+    this.setState({displayMovies: this.state.databaseMovies});
   }
 
   handleSearchText(event) {
@@ -72,10 +72,7 @@ class App extends React.Component{
           </label>
           <button type='submit' value={this.state.title} onClick={this.findMovie}>Submit</button>
         </form>
-        <ul>
-          <li>{this.state.databaseMovies}</li>
-          <li>{this.state.overview}</li>
-        </ul>
+        <SingleMovie allTheMovies={this.state.displayMovies}/>
       </div>
     )
   }
