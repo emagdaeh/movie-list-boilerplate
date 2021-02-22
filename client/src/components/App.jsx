@@ -52,7 +52,7 @@ class App extends React.Component{
     axios
       .post('/api/movieList', {title: this.state.title})
       .then((response) => {
-        console.log(response);
+        console.log('This is on App: ', response);
       })
       .catch((error) => {
         console.log('Error: ', error);

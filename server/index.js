@@ -21,31 +21,42 @@ app.get('/api/movieList', (req, res) => {
 })
 
 app.post('/api/movieList', (req, res) => {
-  // Axios get to The Movie Database and communicate with db
   const searchStr = req.body.title;
 
   axios
     .get(`https://api.themoviedb.org/3/search/movie?api_key=${MOVIEDATABASE_API_KEY}&query=${searchStr}`)
     .then((response) => {
-      console.log('Movie successfully gotten');
+      // console.log('Movie successfully gotten');
       // console.log('response: ', response.data.results[0].title);
-      res.send(response.data.results[0].title);
+
+      const theMovieResultFromTMDB = new Movie({title: response.data.results[0].title});
+
+
+      // Create a variable to hold the .get data
+      // Use the below function to with the variable information to save to my database
+      theMovieResultFromTMDB.save((err, result) => {
+        if (err) {
+          console.log('Error: ', err);
+        } else {
+          console.log('Success: ', result);
+          res.send(result.title);
+        }
+      });
+
+      // Once the movie is successfully saved to my database, return out the information from the database to pass back down to the client in the below .then statement
+
     })
     .catch((err) => {
       console.log('Error: ', err);
     })
-
-  // Movie.save((err, result) => {
-  //   if (err) {
-  //     console.log('Error: ', err);
-  //   } else {
-  //     console.log('Success: ', result);
-  //   }
-  // });
+    // .then((response) => {
+    //   console.log('Second .then response: ', response);
+    //   res.send(response.title);
+    // })
 })
 
-app.put('/', (req, res) => {
-  res.send('Test')
+app.put('/api/movieList/:movieLength/:actors', (req, res) => {
+  res.send(req.params)
 })
 
 app.delete('/', (req, res) => {
